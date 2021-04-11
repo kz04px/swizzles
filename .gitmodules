@@ -1,0 +1,6 @@
+[submodule "libs/libchess"]
+	path = libs/libchess
+	url = https://github.com/kz04px/libchess/
+[submodule "libs/libnnue"]
+	path = libs/libnnue
+	url = https://github.com/kz04px/libnnue
