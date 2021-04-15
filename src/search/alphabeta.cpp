@@ -136,7 +136,7 @@ int alphabeta(chess::Position &pos, Stack *ss, int alpha, int beta, int depth) {
         } else if (move.is_capturing()) {
             return 5000000 + SEEcapture(pos, move);
         } else {
-            return SEEquiet(pos, move);
+            return 0;
         }
     });
 
