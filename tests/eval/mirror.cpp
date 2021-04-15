@@ -3,6 +3,9 @@
 #include "../../src/eval/eval.hpp"
 #include "../catch.hpp"
 
+void flip(chess::Position &pos) {
+}
+
 TEST_CASE("Eval mirroring") {
     const std::string fens[] = {
         "startpos",
@@ -10,11 +13,12 @@ TEST_CASE("Eval mirroring") {
     };
 
     for (const auto &fen : fens) {
-        chess::Position pos{fen};
-        INFO(fen);
+        auto pos = chess::Position{fen};
         const auto e1 = eval::eval(pos);
-        // invert position
+        flip(pos);
         const auto e2 = eval::eval(pos);
+
+        INFO(fen);
         REQUIRE(e1 == e2);
     }
 }

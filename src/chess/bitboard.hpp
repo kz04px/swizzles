@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <ostream>
 #include "../assert.hpp"
+#include "side.hpp"
 #include "square.hpp"
 
 namespace chess {
@@ -135,6 +136,20 @@ class Bitboard {
         return mask_ == 0;
     }
 
+    template <Side side>
+    [[nodiscard]] constexpr auto forwards() const noexcept {
+        if constexpr (side == Side::White) {
+            return north();
+        } else {
+            return south();
+        }
+    }
+
+    template <Side side>
+    [[nodiscard]] constexpr Bitboard backwards() const noexcept {
+        return forwards<!side>();
+    }
+
     [[nodiscard]] constexpr Bitboard north() const noexcept {
         return mask_ << 8;
     }
@@ -149,6 +164,14 @@ class Bitboard {
 
     [[nodiscard]] constexpr Bitboard west() const noexcept {
         return (mask_ >> 1) & ~0x8080808080808080ULL;
+    }
+
+    [[nodiscard]] constexpr bool one() const noexcept {
+        return mask_ && !(mask_ & (mask_ - 1));
+    }
+
+    [[nodiscard]] constexpr bool many() const noexcept {
+        return mask_ ^ (mask_ & -mask_);
     }
 
    private:
@@ -317,6 +340,16 @@ static_assert(Bitboard{squares::H1}.adjacent() == Bitboard{0xc040});
 static_assert(Bitboard{squares::A8}.adjacent() == Bitboard{0x203000000000000});
 static_assert(Bitboard{squares::H8}.adjacent() == Bitboard{0x40c0000000000000});
 static_assert(Bitboard{squares::D4}.adjacent() == Bitboard{0x1c141c0000});
+static_assert(Rank5.forwards<Side::White>() == Rank6);
+static_assert(Rank5.backwards<Side::White>() == Rank4);
+static_assert(Rank5.forwards<Side::Black>() == Rank4);
+static_assert(Rank5.backwards<Side::Black>() == Rank6);
+static_assert(!Bitboard{}.one());
+static_assert(!Bitboard{}.many());
+static_assert(Bitboard{0x1}.one());
+static_assert(!Bitboard{0x1}.many());
+static_assert(!Bitboard{0x3}.one());
+static_assert(Bitboard{0x3}.many());
 
 }  // namespace bitboards
 

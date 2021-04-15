@@ -50,7 +50,6 @@ class Move {
         data_ |= static_cast<unsigned int>(_cap) << 18;
         data_ |= static_cast<unsigned int>(_promotion) << 21;
 
-#ifndef NDEBUG
         UCI_ASSERT(piece() != Piece::None);
         UCI_ASSERT(to() != from());
         UCI_ASSERT(_t == type());
@@ -60,6 +59,7 @@ class Move {
         UCI_ASSERT(_cap == captured());
         UCI_ASSERT(_promotion == promotion());
 
+#ifndef NDEBUG
         switch (type()) {
             case MoveType::Normal:
                 UCI_ASSERT(captured() == Piece::None);
@@ -141,6 +141,10 @@ class Move {
     }
 
     [[nodiscard]] operator std::string() const noexcept {
+        if (!(*this)) {
+            return "0000";
+        }
+
         std::string str;
         str += static_cast<std::string>(from());
         str += static_cast<std::string>(to());

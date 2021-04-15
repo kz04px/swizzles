@@ -44,6 +44,11 @@ class Position {
         return to_move_;
     }
 
+    template <Side side>
+    [[nodiscard]] constexpr Bitboard colour() const noexcept {
+        return colours_[static_cast<int>(side)];
+    }
+
     [[nodiscard]] constexpr Bitboard occupancy(const Side s) const noexcept {
         return colours_[static_cast<int>(s)];
     }
@@ -52,8 +57,50 @@ class Position {
         return pieces_[static_cast<int>(p)];
     }
 
+    [[nodiscard]] constexpr Bitboard white() const noexcept {
+        return colours_[static_cast<int>(Side::White)];
+    }
+
+    [[nodiscard]] constexpr Bitboard black() const noexcept {
+        return colours_[static_cast<int>(Side::Black)];
+    }
+
+    [[nodiscard]] constexpr Bitboard piece(const Piece p) const noexcept {
+        return pieces_[static_cast<int>(p)];
+    }
+
     [[nodiscard]] constexpr Bitboard pieces(const Side s, const Piece p) const noexcept {
         return occupancy(s) & occupancy(p);
+    }
+
+    template <Side side>
+    [[nodiscard]] constexpr Bitboard pawns() const noexcept {
+        return pieces_[static_cast<int>(Piece::Pawn)] & colours_[static_cast<int>(side)];
+    }
+
+    template <Side side>
+    [[nodiscard]] constexpr Bitboard knights() const noexcept {
+        return pieces_[static_cast<int>(Piece::Knight)] & colours_[static_cast<int>(side)];
+    }
+
+    template <Side side>
+    [[nodiscard]] constexpr Bitboard bishops() const noexcept {
+        return pieces_[static_cast<int>(Piece::Bishop)] & colours_[static_cast<int>(side)];
+    }
+
+    template <Side side>
+    [[nodiscard]] constexpr Bitboard rooks() const noexcept {
+        return pieces_[static_cast<int>(Piece::Rook)] & colours_[static_cast<int>(side)];
+    }
+
+    template <Side side>
+    [[nodiscard]] constexpr Bitboard queens() const noexcept {
+        return pieces_[static_cast<int>(Piece::Queen)] & colours_[static_cast<int>(side)];
+    }
+
+    template <Side side>
+    [[nodiscard]] constexpr Bitboard kings() const noexcept {
+        return pieces_[static_cast<int>(Piece::King)] & colours_[static_cast<int>(side)];
     }
 
     [[nodiscard]] constexpr Bitboard occupied() const noexcept {
@@ -66,6 +113,10 @@ class Position {
 
     [[nodiscard]] constexpr std::uint64_t hash() const noexcept {
         return hash_;
+    }
+
+    [[nodiscard]] constexpr int ep() const noexcept {
+        return ep_;
     }
 
     void set_fen(const std::string &fen) noexcept;
@@ -223,7 +274,6 @@ class Position {
             hash_ ^= zobrist::ep_key(ep_);
         }
         hash_ ^= zobrist::turn_key();
-
         to_move_ = !to_move_;
         ep_ = 0xFF;
         halfmove_clock_ = 0;

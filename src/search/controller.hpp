@@ -23,7 +23,7 @@ class Controller {
 
     Controller()
         : nodes_{},
-          depth_{},
+          depth_{1},
           search_type_{SearchType::Depth},
           search_time_{},
           max_nodes_{},
@@ -137,6 +137,11 @@ class Controller {
     [[nodiscard]] bool should_stop() const noexcept {
         if (stop_ || depth_ > 128) {
             return true;
+        }
+
+        // We always want at least the first iteration to finish
+        if (depth_ == 1) {
+            return false;
         }
 
         switch (search_type_) {

@@ -1,6 +1,7 @@
 #include "../search/search.hpp"
 #include <iostream>
 #include <thread>
+#include "../search/constants.hpp"
 #include "../search/controller.hpp"
 #include "uci.hpp"
 
@@ -12,7 +13,15 @@ void search_wrapper(chess::Position pos) {
     auto info_printer = [](const int depth, const int score, const std::uint64_t nodes, const int time, const PV &pv) {
         std::cout << "info";
         std::cout << " depth " << depth;
-        std::cout << " score cp " << score;
+        if (score > constants::max_eval) {
+            const auto moves = (constants::mate_score - score) / 2 + 1;
+            std::cout << " score mate " << moves;
+        } else if (score < constants::min_eval) {
+            const auto moves = (-constants::mate_score - score) / 2;
+            std::cout << " score mate " << moves;
+        } else {
+            std::cout << " score cp " << score;
+        }
         std::cout << " nodes " << nodes;
         std::cout << " time " << time;
         if (time > 0) {

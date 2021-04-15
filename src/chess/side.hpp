@@ -9,7 +9,7 @@ enum class Side : bool
     Black
 };
 
-inline constexpr Side operator!(Side s) {
+[[nodiscard]] inline constexpr Side operator!(Side s) {
     return static_cast<Side>(!static_cast<bool>(s));
 }
 

@@ -12,21 +12,23 @@ void valid(chess::Position &pos, const int depth) noexcept {
         const auto fullmoves = pos.fullmoves();
         const auto hash = pos.hash();
         const auto turn = pos.turn();
+        const auto ep = pos.ep();
 
         pos.makenull();
-
         REQUIRE(pos.calculate_hash() != hash);
         REQUIRE(pos.turn() == !turn);
         REQUIRE(pos.fullmoves() >= fullmoves);
         REQUIRE(pos.hash() == pos.calculate_hash());
+        REQUIRE(pos.ep() == 0xFF);
 
         valid(pos, depth - 1);
-        pos.undonull();
 
+        pos.undonull();
         REQUIRE(halfmoves == pos.halfmoves());
         REQUIRE(fullmoves == pos.fullmoves());
         REQUIRE(hash == pos.hash());
         REQUIRE(turn == pos.turn());
+        REQUIRE(ep == pos.ep());
     }
 
     const auto moves = pos.legal_moves();

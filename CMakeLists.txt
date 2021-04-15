@@ -23,6 +23,7 @@ add_executable(
     swizzles
 
     src/main.cpp
+    src/globals.cpp
 
     # UCI
     src/uci/isready.cpp
@@ -45,6 +46,8 @@ add_executable(
     src/search/controller.cpp
     src/search/alphabeta.cpp
     src/search/search.cpp
+    src/search/see.cpp
+    src/search/qsearch.cpp
 
     # Eval
     src/eval/eval.cpp
@@ -78,7 +81,13 @@ add_executable(
 
     tests/main.cpp
     tests/uci.cpp
-    src/search/controller.cpp
+    tests/see.cpp
+    src/globals.cpp
+
+    # Tests - Eval
+    tests/eval/known.cpp
+    tests/eval/mirror.cpp
+    tests/eval/range.cpp
 
     # Tests - Search
     tests/search/50moves.cpp
@@ -116,6 +125,8 @@ add_executable(
     src/search/controller.cpp
     src/search/alphabeta.cpp
     src/search/search.cpp
+    src/search/see.cpp
+    src/search/qsearch.cpp
 
     # Eval
     src/eval/eval.cpp

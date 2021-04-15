@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../chess/position.hpp"
+#include "../globals.hpp"
 #include "extensions/extensions.hpp"
 #include "uci.hpp"
 
@@ -25,6 +26,7 @@ void listen() {
     }
 
     auto pos = chess::Position{"startpos"};
+    tt.resize(settings::hash.value());
     isready();
 
     while (true) {

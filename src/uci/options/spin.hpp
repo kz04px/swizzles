@@ -3,6 +3,7 @@
 
 #include <ostream>
 #include <string>
+#include "../../util.hpp"
 
 namespace options {
 
@@ -16,7 +17,7 @@ class Spin {
     }
 
     void set(const value_type n) noexcept {
-        m_value = std::max(m_min, std::max(m_max, n));
+        m_value = util::clamp(m_min, m_max, n);
     }
 
     [[nodiscard]] std::string name() const noexcept {

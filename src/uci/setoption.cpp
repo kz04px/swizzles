@@ -1,17 +1,8 @@
+#include "../globals.hpp"
+#include "../util.hpp"
 #include "uci.hpp"
 
 namespace uci {
-
-template <typename T>
-[[nodiscard]] constexpr T clamp(const T min, const T max, const T val) {
-    return (val < min ? min : val > max ? max : val);
-}
-
-static_assert(clamp(1, 3, 5) == 3);
-static_assert(clamp(1, 3, 2) == 2);
-static_assert(clamp(1, 3, -2) == 1);
-static_assert(clamp(1, 3, 1) == 1);
-static_assert(clamp(1, 3, 3) == 3);
 
 void setoption(std::stringstream &ss) {
     std::string word;
@@ -37,6 +28,13 @@ void setoption(std::stringstream &ss) {
             value += " ";
         }
         value += word;
+    }
+
+    try {
+        if (name == "Hash") {
+            settings::hash.set(std::stoi(value));
+        }
+    } catch (...) {
     }
 }
 
