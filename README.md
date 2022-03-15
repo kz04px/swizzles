@@ -1,6 +1,16 @@
 # Swizzles
-
 A C++20 chess engine
+
+---
+
+## Build
+```
+git clone https://github.com/kz04px/swizzles
+mkdir swizzles/build
+cd swizzles/build
+cmake ..
+make
+```
 
 ---
 
