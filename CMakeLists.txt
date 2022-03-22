@@ -62,6 +62,22 @@ add_executable(
     src/tests/chess/threefold.cpp
     src/tests/chess/validate.cpp
     src/tests/chess/zobrist.cpp
+    src/tests/search/50moves.cpp
+    src/tests/search/mates.cpp
+    src/tests/search/movetime.cpp
+    src/tests/search/stalemate.cpp
+    src/tests/search/tactics.cpp
+    src/tests/search/underpromote.cpp
+    src/tests/uci/moves.cpp
+    src/tests/uci/position.cpp
+    src/tests/uci/quit.cpp
+    # Swizzles
+    src/swizzles/settings.cpp
+    # Eval
+    src/swizzles/eval/eval.cpp
+    # Search
+    src/swizzles/search/root.cpp
+    src/swizzles/search/search.cpp
     # Chess
     src/chess/calculate_hash.cpp
     src/chess/get_fen.cpp
@@ -73,8 +89,15 @@ add_executable(
     src/chess/set_fen.cpp
     src/chess/undomove.cpp
     src/chess/zobrist.cpp
+    # UCI
+    src/swizzles/uci/go.cpp
+    src/swizzles/uci/moves.cpp
+    src/swizzles/uci/parse.cpp
+    src/swizzles/uci/position.cpp
+    src/swizzles/uci/ucinewgame.cpp
 )
 
 target_link_libraries(swizzles Threads::Threads)
+target_link_libraries(test Threads::Threads)
 
 set_property(TARGET swizzles PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
