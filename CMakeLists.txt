@@ -29,6 +29,7 @@ add_executable(
     src/swizzles/settings.cpp
     # Eval
     src/swizzles/eval/eval.cpp
+    src/swizzles/eval/pst.cpp
     # Search
     src/swizzles/search/root.cpp
     src/swizzles/search/search.cpp
@@ -75,6 +76,7 @@ add_executable(
     src/swizzles/settings.cpp
     # Eval
     src/swizzles/eval/eval.cpp
+    src/swizzles/eval/pst.cpp
     # Search
     src/swizzles/search/root.cpp
     src/swizzles/search/search.cpp
@@ -148,6 +150,7 @@ add_executable(
     src/tools/bench_search.cpp
     # Swizzles
     src/swizzles/eval/eval.cpp
+    src/swizzles/eval/pst.cpp
     src/swizzles/search/root.cpp
     src/swizzles/search/search.cpp
     # Chess

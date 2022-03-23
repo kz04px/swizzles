@@ -1,5 +1,6 @@
 #include "eval.hpp"
 #include <chess/position.hpp>
+#include "pst.hpp"
 
 namespace swizzles::eval {
 
@@ -15,6 +16,26 @@ template <chess::Colour us>
     score += material[2] * pos.get_bishops(us).count();
     score += material[3] * pos.get_rooks(us).count();
     score += material[4] * pos.get_queens(us).count();
+
+    // PST
+    for (const auto sq : pos.get_pawns(us)) {
+        score += pst_value<us>(chess::PieceType::Pawn, sq);
+    }
+    for (const auto sq : pos.get_knights(us)) {
+        score += pst_value<us>(chess::PieceType::Knight, sq);
+    }
+    for (const auto sq : pos.get_bishops(us)) {
+        score += pst_value<us>(chess::PieceType::Bishop, sq);
+    }
+    for (const auto sq : pos.get_rooks(us)) {
+        score += pst_value<us>(chess::PieceType::Rook, sq);
+    }
+    for (const auto sq : pos.get_queens(us)) {
+        score += pst_value<us>(chess::PieceType::Queen, sq);
+    }
+    for (const auto sq : pos.get_kings(us)) {
+        score += pst_value<us>(chess::PieceType::King, sq);
+    }
 
     return score;
 }
