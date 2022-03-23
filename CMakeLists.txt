@@ -97,7 +97,75 @@ add_executable(
     src/swizzles/uci/ucinewgame.cpp
 )
 
+# Add the executable
+add_executable(
+    perft
+    src/tools/perft.cpp
+    # Chess
+    src/chess/calculate_hash.cpp
+    src/chess/is_attacked.cpp
+    src/chess/magic.cpp
+    src/chess/makemove.cpp
+    src/chess/movegen.cpp
+    src/chess/set_fen.cpp
+    src/chess/undomove.cpp
+    src/chess/zobrist.cpp
+)
+
+# Add the executable
+add_executable(
+    split
+    src/tools/split.cpp
+    # Chess
+    src/chess/calculate_hash.cpp
+    src/chess/is_attacked.cpp
+    src/chess/magic.cpp
+    src/chess/makemove.cpp
+    src/chess/movegen.cpp
+    src/chess/set_fen.cpp
+    src/chess/undomove.cpp
+    src/chess/zobrist.cpp
+)
+
+# Add the executable
+add_executable(
+    bench_perft
+    src/tools/bench_perft.cpp
+    # Chess
+    src/chess/calculate_hash.cpp
+    src/chess/is_attacked.cpp
+    src/chess/magic.cpp
+    src/chess/makemove.cpp
+    src/chess/movegen.cpp
+    src/chess/set_fen.cpp
+    src/chess/undomove.cpp
+    src/chess/zobrist.cpp
+)
+
+# Add the executable
+add_executable(
+    bench_search
+    src/tools/bench_search.cpp
+    # Swizzles
+    src/swizzles/eval/eval.cpp
+    src/swizzles/search/root.cpp
+    src/swizzles/search/search.cpp
+    # Chess
+    src/chess/calculate_hash.cpp
+    src/chess/is_attacked.cpp
+    src/chess/magic.cpp
+    src/chess/makemove.cpp
+    src/chess/movegen.cpp
+    src/chess/set_fen.cpp
+    src/chess/undomove.cpp
+    src/chess/zobrist.cpp
+)
+
 target_link_libraries(swizzles Threads::Threads)
 target_link_libraries(test Threads::Threads)
 
 set_property(TARGET swizzles PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+set_property(TARGET perft PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+set_property(TARGET split PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+set_property(TARGET bench_perft PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+set_property(TARGET bench_search PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
