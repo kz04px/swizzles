@@ -49,13 +49,13 @@ class SearchController {
     auto update() noexcept -> void {
         switch (m_settings.type) {
             case SearchType::Time:
-                m_stop = elapsed().count() >= m_target_time;
+                m_stop = m_stop || elapsed().count() >= m_target_time;
                 break;
             case SearchType::Depth:
-                m_stop = m_current_depth > m_settings.depth;
+                m_stop = m_stop || m_current_depth > m_settings.depth;
                 break;
             case SearchType::Movetime:
-                m_stop = elapsed().count() >= m_settings.movetime;
+                m_stop = m_stop || elapsed().count() >= m_settings.movetime;
                 break;
             case SearchType::Nodes:
                 break;
