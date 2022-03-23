@@ -2,6 +2,7 @@
 #include <chess/position.hpp>
 #include <limits>
 #include "../eval/eval.hpp"
+#include "sort.hpp"
 
 namespace swizzles::search {
 
@@ -35,8 +36,10 @@ namespace swizzles::search {
     }
 
     auto best_score = std::numeric_limits<int>::min();
+    auto moves = pos.movegen();
 
-    const auto moves = pos.movegen();
+    sort(moves);
+
     for (const auto &move : moves) {
         pos.makemove(move);
 

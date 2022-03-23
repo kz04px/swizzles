@@ -8,14 +8,16 @@ namespace chess {
 
 class MoveList {
    public:
+    static constexpr std::size_t max_capacity = 218;
+
     using size_type = std::size_t;
-    using iterator = std::array<Move, 218>::iterator;
-    using const_iterator = std::array<Move, 218>::const_iterator;
+    using iterator = std::array<Move, max_capacity>::iterator;
+    using const_iterator = std::array<Move, max_capacity>::const_iterator;
 
     [[nodiscard]] constexpr MoveList() noexcept = default;
 
     [[nodiscard]] constexpr auto capacity() const noexcept -> size_type {
-        return 218;
+        return max_capacity;
     }
 
     [[nodiscard]] constexpr auto size() const noexcept -> size_type {
@@ -57,7 +59,7 @@ class MoveList {
     }
 
    private:
-    std::array<Move, 218> m_moves;
+    std::array<Move, max_capacity> m_moves;
     size_type m_size = 0;
 };
 

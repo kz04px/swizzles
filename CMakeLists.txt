@@ -33,6 +33,7 @@ add_executable(
     # Search
     src/swizzles/search/root.cpp
     src/swizzles/search/search.cpp
+    src/swizzles/search/sort.cpp
     # UCI
     src/swizzles/uci/go.cpp
     src/swizzles/uci/listen.cpp
@@ -80,6 +81,7 @@ add_executable(
     # Search
     src/swizzles/search/root.cpp
     src/swizzles/search/search.cpp
+    src/swizzles/search/sort.cpp
     # Chess
     src/chess/calculate_hash.cpp
     src/chess/get_fen.cpp
@@ -153,6 +155,7 @@ add_executable(
     src/swizzles/eval/pst.cpp
     src/swizzles/search/root.cpp
     src/swizzles/search/search.cpp
+    src/swizzles/search/sort.cpp
     # Chess
     src/chess/calculate_hash.cpp
     src/chess/is_attacked.cpp
