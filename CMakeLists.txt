@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.12)
 # Project
 project(Swizzles VERSION 1.0 LANGUAGES CXX)
 
+# Packages
+find_package(Threads REQUIRED)
+
 # Third party includes
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs/)
@@ -18,6 +21,34 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -march=native -g -DNDEBUG")
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
+
+# Add the executable
+add_executable(
+    swizzles
+    src/swizzles/main.cpp
+    src/swizzles/settings.cpp
+    # Eval
+    src/swizzles/eval/eval.cpp
+    # Search
+    src/swizzles/search/root.cpp
+    src/swizzles/search/search.cpp
+    # UCI
+    src/swizzles/uci/go.cpp
+    src/swizzles/uci/listen.cpp
+    src/swizzles/uci/moves.cpp
+    src/swizzles/uci/parse.cpp
+    src/swizzles/uci/position.cpp
+    src/swizzles/uci/ucinewgame.cpp
+    # Chess
+    src/chess/calculate_hash.cpp
+    src/chess/is_attacked.cpp
+    src/chess/magic.cpp
+    src/chess/makemove.cpp
+    src/chess/movegen.cpp
+    src/chess/set_fen.cpp
+    src/chess/undomove.cpp
+    src/chess/zobrist.cpp
+)
 
 # Add the executable
 add_executable(
@@ -43,3 +74,7 @@ add_executable(
     src/chess/undomove.cpp
     src/chess/zobrist.cpp
 )
+
+target_link_libraries(swizzles Threads::Threads)
+
+set_property(TARGET swizzles PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
