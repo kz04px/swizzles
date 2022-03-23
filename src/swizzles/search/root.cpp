@@ -46,7 +46,8 @@ namespace swizzles::search {
         controller.set_depth(depth);
 
         // Start the main search
-        const auto eval = swizzles::search::search(thread_data[0], &thread_data[0].stack[0], thread_data[0].pos, depth);
+        const auto eval = swizzles::search::search(
+            thread_data[0], &thread_data[0].stack[0], thread_data[0].pos, -inf_score, inf_score, depth);
 
         // Remember if the search controller stopped the search
         const auto controller_stoppage = controller.should_stop();

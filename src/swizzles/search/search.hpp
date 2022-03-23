@@ -10,7 +10,15 @@ class Position;
 
 namespace swizzles::search {
 
-[[nodiscard]] auto search(ThreadData &td, SearchStack *ss, chess::Position &pos, const int depth) noexcept -> int;
+static constexpr int inf_score = 2'000'000;
+static constexpr int mate_score = 1'000'000;
+
+[[nodiscard]] auto search(ThreadData &td,
+                          SearchStack *ss,
+                          chess::Position &pos,
+                          int alpha,
+                          const int beta,
+                          const int depth) noexcept -> int;
 
 }  // namespace swizzles::search
 

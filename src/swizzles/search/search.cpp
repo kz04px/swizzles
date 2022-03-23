@@ -5,9 +5,12 @@
 
 namespace swizzles::search {
 
-static constexpr int mate_score = 1'000'000;
-
-[[nodiscard]] auto search(ThreadData &td, SearchStack *ss, chess::Position &pos, const int depth) noexcept -> int {
+[[nodiscard]] auto search(ThreadData &td,
+                          SearchStack *ss,
+                          chess::Position &pos,
+                          int alpha,
+                          const int beta,
+                          const int depth) noexcept -> int {
     td.seldepth = std::max(td.seldepth, ss->ply);
 
     const auto is_root = ss->ply == 0;
@@ -44,13 +47,18 @@ static constexpr int mate_score = 1'000'000;
 
         td.nodes++;
 
-        const auto score = -search(td, ss + 1, pos, depth - 1);
+        const auto score = -search(td, ss + 1, pos, -beta, -alpha, depth - 1);
         pos.undomove();
 
         if (score > best_score) {
             best_score = score;
             ss->pv.clear();
             ss->pv.push_back(move);
+        }
+
+        alpha = std::max(alpha, score);
+        if (alpha >= beta) {
+            break;
         }
     }
 
