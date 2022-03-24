@@ -4,11 +4,18 @@
 
 namespace swizzles::eval {
 
-static constexpr std::array<int, 6> material = {100, 300, 300, 500, 900, 0};
+static constexpr std::array<Score, 6> material = {{
+    {100, 100},
+    {300, 300},
+    {300, 300},
+    {500, 500},
+    {900, 900},
+    {0, 0},
+}};
 
 template <chess::Colour us>
-[[nodiscard]] auto eval_us(const chess::Position &pos) noexcept -> int {
-    int score = 0;
+[[nodiscard]] auto eval_us(const chess::Position &pos) noexcept -> Score {
+    Score score;
 
     // Material
     score += material[0] * pos.get_pawns(us).count();
@@ -40,16 +47,27 @@ template <chess::Colour us>
     return score;
 }
 
-[[nodiscard]] auto eval(const chess::Position &pos) noexcept -> int {
-    int score = 0;
+[[nodiscard]] auto phase(const chess::Position &pos, const Score &score) noexcept -> int {
+    const auto num_knights = pos.get_knights().count();
+    const auto num_bishops = pos.get_bishops().count();
+    const auto num_rooks = pos.get_rooks().count();
+    const auto num_queens = pos.get_queens().count();
+    const auto total_phase = 24;
+    auto phase = total_phase - num_knights - num_bishops - 2 * num_rooks - 4 * num_queens;
+    phase = (phase * 256 + (total_phase / 2)) / total_phase;
+    return ((score.mg() * (256 - phase)) + (score.eg() * phase)) / 256;
+}
 
+[[nodiscard]] auto eval(const chess::Position &pos) noexcept -> int {
+    Score score;
     score += eval_us<chess::Colour::White>(pos);
     score -= eval_us<chess::Colour::Black>(pos);
+    const int phased = phase(pos, score);
 
     if (pos.turn() == chess::Colour::White) {
-        return score;
+        return phased;
     } else {
-        return -score;
+        return -phased;
     }
 }
 
