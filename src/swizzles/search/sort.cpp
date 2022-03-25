@@ -4,6 +4,10 @@
 namespace swizzles::search {
 
 auto sort(chess::MoveList &movelist) noexcept -> void {
+    if (movelist.empty()) {
+        return;
+    }
+
     auto mvvlva = [](const chess::Move move) noexcept -> int {
         const int material[7] = {1, 2, 2, 3, 4, 5, 0};
         return 10 * material[index(move.captured())] - material[index(move.piece())];

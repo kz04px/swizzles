@@ -24,6 +24,10 @@ class MoveList {
         return m_size;
     }
 
+    [[nodiscard]] constexpr auto empty() const noexcept -> bool {
+        return m_size == 0;
+    }
+
     [[nodiscard]] constexpr auto begin() noexcept -> iterator {
         return m_moves.begin();
     }
