@@ -19,11 +19,11 @@ TEST_CASE("UCI - no quit") {
     }};
 
     std::stringstream ss;
-    auto pos = chess::Position();
+    swizzles::uci::UCIState state;
 
     for (const auto &input : inputs) {
         ss << input;
-        const auto quit = swizzles::uci::parse(ss, pos);
+        const auto quit = swizzles::uci::parse(ss, state);
         REQUIRE(!quit);
         ss.clear();
     }
@@ -31,8 +31,8 @@ TEST_CASE("UCI - no quit") {
 
 TEST_CASE("UCI - quit") {
     std::stringstream ss("quit");
-    auto pos = chess::Position();
-    const auto quit = swizzles::uci::parse(ss, pos);
+    swizzles::uci::UCIState state;
+    const auto quit = swizzles::uci::parse(ss, state);
     REQUIRE(quit);
 }
 

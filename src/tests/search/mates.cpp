@@ -17,6 +17,7 @@ TEST_CASE("Search - Checkmate") {
         {"8/8/8/8/8/1k6/8/1K1R2r1 b - - 0 1", "g1d1"},
     }};
 
+    auto state = swizzles::uci::UCIState();
     // Search settings
     auto settings = swizzles::search::SearchSettings();
     settings.type = swizzles::search::SearchType::Depth;
@@ -25,8 +26,8 @@ TEST_CASE("Search - Checkmate") {
 
     for (const auto &[fen, movestr] : tests) {
         INFO("FEN: ", fen);
-        settings.pos.set_fen(fen);
-        const auto results = swizzles::search::root(settings, stop);
+        state.pos.set_fen(fen);
+        const auto results = swizzles::search::root(state, settings, stop);
         REQUIRE(static_cast<std::string>(results.bestmove) == movestr);
     }
 }
@@ -39,6 +40,7 @@ TEST_CASE("Search - Checkmate with castling") {
         {"r3k2K/r7/8/8/8/8/8/8 b q - 0 1", "e8a8"},
     }};
 
+    auto state = swizzles::uci::UCIState();
     // Search settings
     auto settings = swizzles::search::SearchSettings();
     settings.type = swizzles::search::SearchType::Depth;
@@ -47,8 +49,8 @@ TEST_CASE("Search - Checkmate with castling") {
 
     for (const auto &[fen, movestr] : tests) {
         INFO("FEN: ", fen);
-        settings.pos.set_fen(fen);
-        const auto results = swizzles::search::root(settings, stop);
+        state.pos.set_fen(fen);
+        const auto results = swizzles::search::root(state, settings, stop);
         REQUIRE(static_cast<std::string>(results.bestmove) == movestr);
     }
 }

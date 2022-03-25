@@ -46,13 +46,11 @@ auto stop() noexcept -> void {
     search_stop = false;
 }
 
-auto go(std::stringstream &ss, const chess::Position &pos) noexcept -> void {
+auto go(std::stringstream &ss, const UCIState &state) noexcept -> void {
     stop();
 
     // Search settings
     auto settings = search::SearchSettings();
-    settings.num_threads = settings::threads.val;
-    settings.pos = pos;
     settings.info_printer = uci_info_printer;
 
     while (!ss.eof()) {
@@ -94,8 +92,8 @@ auto go(std::stringstream &ss, const chess::Position &pos) noexcept -> void {
         }
     }
 
-    search_thread = std::thread([settings]() {
-        const auto results = search::root(settings, search_stop);
+    search_thread = std::thread([state, settings]() {
+        const auto results = search::root(state, settings, search_stop);
         std::cout << "bestmove " << results.bestmove << std::endl;
     });
 }

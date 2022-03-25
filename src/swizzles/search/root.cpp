@@ -23,21 +23,22 @@ namespace swizzles::search {
     return seldepth;
 }
 
-[[nodiscard]] auto root(const SearchSettings settings, std::atomic<bool> &stop) noexcept -> Results {
+[[nodiscard]] auto root(const uci::UCIState &state, const SearchSettings settings, std::atomic<bool> &stop) noexcept
+    -> Results {
     auto controller = SearchController(settings, stop);
     controller.start();
 
     // Time strategy
     if (settings.type == SearchType::Time) {
-        const auto time = settings.pos.turn() == chess::Colour::White ? settings.wtime : settings.btime;
+        const auto time = state.pos.turn() == chess::Colour::White ? settings.wtime : settings.btime;
         controller.set_max_time(time / 30);
     }
 
     auto results = Results();
 
     std::vector<ThreadData> thread_data;
-    for (int i = 0; i < settings.num_threads; ++i) {
-        thread_data.emplace_back(i, &controller, settings.pos);
+    for (int i = 0; i < state.threads.val; ++i) {
+        thread_data.emplace_back(i, &controller, state.pos);
     }
 
     std::vector<std::thread> threads;

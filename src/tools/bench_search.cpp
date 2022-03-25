@@ -39,6 +39,7 @@ int main(const int argc, const char **argv) {
 
     auto total_time = std::chrono::milliseconds(0);
 
+    auto state = swizzles::uci::UCIState();
     // Search settings
     auto settings = swizzles::search::SearchSettings();
     settings.type = swizzles::search::SearchType::Depth;
@@ -64,11 +65,11 @@ int main(const int argc, const char **argv) {
     std::cout << "\n";
 
     for (std::size_t i = 0; i < fens.size(); ++i) {
-        settings.pos.set_fen(fens.at(i));
+        state.pos.set_fen(fens.at(i));
 
         // Search
         const auto t0 = std::chrono::steady_clock::now();
-        const auto results = swizzles::search::root(settings, stop);
+        const auto results = swizzles::search::root(state, settings, stop);
         const auto t1 = std::chrono::steady_clock::now();
         const auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
 

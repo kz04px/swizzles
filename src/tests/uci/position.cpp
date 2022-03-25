@@ -10,9 +10,9 @@ TEST_SUITE_BEGIN("UCI");
 
 TEST_CASE("UCI - \"position startpos\"") {
     std::stringstream ss("position startpos");
-    auto pos = chess::Position();
-    swizzles::uci::parse(ss, pos);
-    REQUIRE(pos.get_fen() == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    swizzles::uci::UCIState state;
+    swizzles::uci::parse(ss, state);
+    REQUIRE(state.pos.get_fen() == "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
 TEST_CASE("UCI - \"position [fen]\"") {
@@ -28,13 +28,13 @@ TEST_CASE("UCI - \"position [fen]\"") {
     }};
 
     std::stringstream ss;
-    auto pos = chess::Position();
+    swizzles::uci::UCIState state;
 
     SUBCASE("no \"moves\" list") {
         for (const auto &fen : fens) {
             ss << "position fen " << fen;
-            swizzles::uci::parse(ss, pos);
-            REQUIRE(pos.get_fen() == fen);
+            swizzles::uci::parse(ss, state);
+            REQUIRE(state.pos.get_fen() == fen);
             ss.clear();
         }
     }
@@ -42,8 +42,8 @@ TEST_CASE("UCI - \"position [fen]\"") {
     SUBCASE("empty \"moves\" list") {
         for (const auto &fen : fens) {
             ss << "position fen " << fen << " moves";
-            swizzles::uci::parse(ss, pos);
-            REQUIRE(pos.get_fen() == fen);
+            swizzles::uci::parse(ss, state);
+            REQUIRE(state.pos.get_fen() == fen);
             ss.clear();
         }
     }
@@ -67,10 +67,11 @@ TEST_CASE("UCI - \"position [fen] moves [moves]\"") {
          "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2"},
     }};
 
+    swizzles::uci::UCIState state;
+
     for (const auto &[fen_start, moves, fen_end] : tests) {
         INFO("FEN: ", fen_start);
         INFO("Moves: ", moves);
-        auto pos = chess::Position();
 
         std::stringstream ss;
         if (fen_start == "startpos") {
@@ -78,9 +79,9 @@ TEST_CASE("UCI - \"position [fen] moves [moves]\"") {
         } else {
             ss << "position fen " << fen_start << " moves " << moves;
         }
-        swizzles::uci::parse(ss, pos);
+        swizzles::uci::parse(ss, state);
 
-        REQUIRE(pos.get_fen() == fen_end);
+        REQUIRE(state.pos.get_fen() == fen_end);
     }
 }
 

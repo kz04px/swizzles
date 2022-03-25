@@ -15,6 +15,7 @@ TEST_CASE("Search - Underpromotions") {
         {"7k/8/8/8/8/5q2/5p1K/6N1 b - - 0 1", "f2f1n"},
     }};
 
+    auto state = swizzles::uci::UCIState();
     // Search settings
     auto settings = swizzles::search::SearchSettings();
     settings.type = swizzles::search::SearchType::Depth;
@@ -23,8 +24,8 @@ TEST_CASE("Search - Underpromotions") {
 
     for (const auto &[fen, movestr] : tests) {
         INFO("FEN: ", fen);
-        settings.pos.set_fen(fen);
-        const auto results = swizzles::search::root(settings, stop);
+        state.pos.set_fen(fen);
+        const auto results = swizzles::search::root(state, settings, stop);
         REQUIRE(static_cast<std::string>(results.bestmove) == movestr);
     }
 }

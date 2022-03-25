@@ -32,9 +32,6 @@ struct String {
     std::string value;
 };
 
-extern Spin hash;
-extern Spin threads;
-
 }  // namespace swizzles::settings
 
 #endif

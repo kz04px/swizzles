@@ -37,8 +37,6 @@ struct SearchSettings {
     int movestogo = 0;
     int depth = 1;
     int movetime = 0;
-    int num_threads = 1;
-    chess::Position pos;
     info_printer_type info_printer = [](const int,
                                         const int,
                                         const int,

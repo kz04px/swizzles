@@ -3,6 +3,7 @@
 #include <chess/position.hpp>
 #include <sstream>
 #include <string>
+#include <swizzles/uci/state.hpp>
 #include <swizzles/uci/uci.hpp>
 
 TEST_SUITE_BEGIN("UCI");
@@ -23,14 +24,15 @@ TEST_CASE("UCI - moves") {
     }};
 
     std::stringstream ss;
+    swizzles::uci::UCIState state;
 
     for (const auto &[moves, fen] : tests) {
         INFO("Moves: ", moves);
         INFO("FEN: ", fen);
-        auto pos = chess::Position("startpos");
+        state.pos.set_fen("startpos");
         ss << moves;
-        swizzles::uci::moves(ss, pos);
-        REQUIRE(pos.get_fen() == fen);
+        swizzles::uci::moves(ss, state);
+        REQUIRE(state.pos.get_fen() == fen);
         ss.clear();
     }
 }
@@ -44,14 +46,15 @@ TEST_CASE("UCI - moves illegal") {
     }};
 
     std::stringstream ss;
+    swizzles::uci::UCIState state;
 
     for (const auto &[moves, fen] : tests) {
         INFO("Moves: ", moves);
         INFO("FEN: ", fen);
-        auto pos = chess::Position("startpos");
+        state.pos.set_fen("startpos");
         ss << moves;
-        swizzles::uci::moves(ss, pos);
-        REQUIRE(pos.get_fen() == fen);
+        swizzles::uci::moves(ss, state);
+        REQUIRE(state.pos.get_fen() == fen);
         ss.clear();
     }
 }

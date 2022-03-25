@@ -19,6 +19,7 @@ TEST_CASE("Search - Stalemate") {
         {"8/8/8/8/b7/8/p1Q5/k1K5 b - - 0 1", "a4c2"},
     }};
 
+    auto state = swizzles::uci::UCIState();
     // Search settings
     auto settings = swizzles::search::SearchSettings();
     settings.type = swizzles::search::SearchType::Depth;
@@ -27,8 +28,8 @@ TEST_CASE("Search - Stalemate") {
 
     for (const auto &[fen, movestr] : tests) {
         INFO("FEN: ", fen);
-        settings.pos.set_fen(fen);
-        const auto results = swizzles::search::root(settings, stop);
+        state.pos.set_fen(fen);
+        const auto results = swizzles::search::root(state, settings, stop);
         REQUIRE(static_cast<std::string>(results.bestmove) == movestr);
     }
 }

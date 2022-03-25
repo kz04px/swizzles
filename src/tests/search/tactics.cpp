@@ -15,6 +15,7 @@ TEST_CASE("Search - Tactics") {
         {"4k3/8/8/3q4/8/8/3Q4/4K3 w - - 0 1", "d2d5"},
     }};
 
+    auto state = swizzles::uci::UCIState();
     // Search settings
     auto settings = swizzles::search::SearchSettings();
     settings.type = swizzles::search::SearchType::Depth;
@@ -23,8 +24,8 @@ TEST_CASE("Search - Tactics") {
 
     for (const auto &[fen, movestr] : tests) {
         INFO("FEN: ", fen);
-        settings.pos.set_fen(fen);
-        const auto results = swizzles::search::root(settings, stop);
+        state.pos.set_fen(fen);
+        const auto results = swizzles::search::root(state, settings, stop);
         REQUIRE(static_cast<std::string>(results.bestmove) == movestr);
     }
 }

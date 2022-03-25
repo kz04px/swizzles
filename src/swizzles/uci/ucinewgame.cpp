@@ -5,8 +5,8 @@
 
 namespace swizzles::uci {
 
-auto ucinewgame(chess::Position &pos) noexcept -> void {
-    pos.set_fen("startpos");
+auto ucinewgame(UCIState &state) noexcept -> void {
+    state.pos.set_fen("startpos");
 }
 
 }  // namespace swizzles::uci

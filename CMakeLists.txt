@@ -26,7 +26,6 @@ endif()
 add_executable(
     swizzles
     src/swizzles/main.cpp
-    src/swizzles/settings.cpp
     # Eval
     src/swizzles/eval/eval.cpp
     src/swizzles/eval/pst.cpp
@@ -75,8 +74,6 @@ add_executable(
     src/tests/uci/moves.cpp
     src/tests/uci/position.cpp
     src/tests/uci/quit.cpp
-    # Swizzles
-    src/swizzles/settings.cpp
     # Eval
     src/swizzles/eval/eval.cpp
     src/swizzles/eval/pst.cpp
