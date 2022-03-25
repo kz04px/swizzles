@@ -188,6 +188,20 @@ class Bitboard {
                         (m_mask >> 8));
     }
 
+    [[nodiscard]] constexpr auto extend_north() const noexcept -> Bitboard {
+        const auto a = m_mask | m_mask << 8;
+        const auto b = a | a << 16;
+        const auto c = b | b << 32;
+        return Bitboard(c);
+    }
+
+    [[nodiscard]] constexpr auto extend_south() const noexcept -> Bitboard {
+        const auto a = m_mask | m_mask >> 8;
+        const auto b = a | a >> 16;
+        const auto c = b | b >> 32;
+        return Bitboard(c);
+    }
+
     [[nodiscard]] constexpr auto knight() const noexcept -> Bitboard {
         auto result = Bitboard();
         result |= Bitboard(((m_mask << 17) | (m_mask >> 15)) & ~Bitmask::FileA);
@@ -336,6 +350,18 @@ static_assert(Bitboard(0x100000000000000ULL).adjacent() == Bitboard(0x2030000000
 static_assert(Bitboard(0x8000000000000000ULL).adjacent() == Bitboard(0x40C0000000000000ULL));
 static_assert(Bitboard(0x80ULL).adjacent() == Bitboard(0xC040ULL));
 static_assert(Bitboard(0x40000ULL).adjacent() == Bitboard(0xE0A0E00ULL));
+// Bitboard::extend_north()
+static_assert(Bitboard(Bitmask::Rank1).extend_north() == Bitboard(Bitmask::Full));
+static_assert(Bitboard(Bitmask::FileA).extend_north() == Bitboard(Bitmask::FileA));
+static_assert(Bitboard(Square::A1).extend_north() == Bitboard(Bitmask::FileA));
+static_assert(Bitboard(Square::H1).extend_north() == Bitboard(Bitmask::FileH));
+static_assert(Bitboard(0x4000000900100200ULL).extend_north() == Bitboard(0x5B1B1B1B12120200ULL));
+// Bitboard::extend_south()
+static_assert(Bitboard(Bitmask::Rank8).extend_south() == Bitboard(Bitmask::Full));
+static_assert(Bitboard(Bitmask::FileA).extend_south() == Bitboard(Bitmask::FileA));
+static_assert(Bitboard(Square::A8).extend_south() == Bitboard(Bitmask::FileA));
+static_assert(Bitboard(Square::H8).extend_south() == Bitboard(Bitmask::FileH));
+static_assert(Bitboard(0x4000000900100200ULL).extend_south() == Bitboard(0x4040404949595B5BULL));
 // Bitboard::knight()
 static_assert(Bitboard(0x8000000ULL).knight() == Bitboard(0x142200221400ULL));
 static_assert(Bitboard(0x1ULL).knight() == Bitboard(0x20400ULL));
