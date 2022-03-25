@@ -34,6 +34,7 @@ add_executable(
     src/swizzles/search/root.cpp
     src/swizzles/search/search.cpp
     src/swizzles/search/sort.cpp
+    src/swizzles/search/qsearch.cpp
     # UCI
     src/swizzles/uci/go.cpp
     src/swizzles/uci/listen.cpp
@@ -43,6 +44,7 @@ add_executable(
     src/swizzles/uci/ucinewgame.cpp
     # Chess
     src/chess/calculate_hash.cpp
+    src/chess/captures.cpp
     src/chess/is_attacked.cpp
     src/chess/magic.cpp
     src/chess/makemove.cpp
@@ -82,8 +84,10 @@ add_executable(
     src/swizzles/search/root.cpp
     src/swizzles/search/search.cpp
     src/swizzles/search/sort.cpp
+    src/swizzles/search/qsearch.cpp
     # Chess
     src/chess/calculate_hash.cpp
+    src/chess/captures.cpp
     src/chess/get_fen.cpp
     src/chess/is_attacked.cpp
     src/chess/magic.cpp
@@ -155,9 +159,11 @@ add_executable(
     src/swizzles/eval/pst.cpp
     src/swizzles/search/root.cpp
     src/swizzles/search/search.cpp
+    src/swizzles/search/qsearch.cpp
     src/swizzles/search/sort.cpp
     # Chess
     src/chess/calculate_hash.cpp
+    src/chess/captures.cpp
     src/chess/is_attacked.cpp
     src/chess/magic.cpp
     src/chess/makemove.cpp

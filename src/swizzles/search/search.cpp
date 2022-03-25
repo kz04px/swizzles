@@ -2,6 +2,7 @@
 #include <chess/position.hpp>
 #include <limits>
 #include "../eval/eval.hpp"
+#include "qsearch.hpp"
 #include "sort.hpp"
 
 namespace swizzles::search {
@@ -18,7 +19,7 @@ namespace swizzles::search {
     const auto in_check = pos.is_attacked(pos.get_kings(pos.turn()), !pos.turn());
 
     if (depth == 0 || ss->ply == 127) {
-        return eval::eval(pos);
+        return qsearch(pos, alpha, beta);
     }
 
     if (pos.halfmoves() >= 100) {
