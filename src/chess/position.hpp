@@ -57,6 +57,8 @@ class Position {
 
     [[nodiscard]] auto movegen() const noexcept -> MoveList;
 
+    [[nodiscard]] auto captures() const noexcept -> MoveList;
+
     [[nodiscard]] auto is_attacked(const Square sq, const Colour side) const noexcept -> bool;
 
     [[nodiscard]] auto is_attacked(const Bitboard bb, const Colour side) const noexcept -> bool;
