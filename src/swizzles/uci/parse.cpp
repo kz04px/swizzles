@@ -14,6 +14,8 @@ auto parse(std::stringstream &ss, UCIState &state) noexcept -> bool {
             position(ss, state);
         } else if (word == "ucinewgame") {
             ucinewgame(state);
+        } else if (word == "setoption") {
+            setoption(ss, state);
         } else if (word == "isready") {
             std::cout << "readyok" << std::endl;
         } else if (word == "go") {

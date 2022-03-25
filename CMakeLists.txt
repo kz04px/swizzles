@@ -40,6 +40,7 @@ add_executable(
     src/swizzles/uci/moves.cpp
     src/swizzles/uci/parse.cpp
     src/swizzles/uci/position.cpp
+    src/swizzles/uci/setoption.cpp
     src/swizzles/uci/ucinewgame.cpp
     # Chess
     src/chess/calculate_hash.cpp
@@ -99,6 +100,7 @@ add_executable(
     src/swizzles/uci/moves.cpp
     src/swizzles/uci/parse.cpp
     src/swizzles/uci/position.cpp
+    src/swizzles/uci/setoption.cpp
     src/swizzles/uci/ucinewgame.cpp
 )
 

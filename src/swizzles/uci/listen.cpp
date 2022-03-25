@@ -36,10 +36,14 @@ auto listen() noexcept -> void {
     while (true) {
         std::string input;
         std::getline(std::cin, input);
+        std::stringstream ss(input);
+        ss >> input;
 
         if (input == "isready") {
             std::cout << "readyok" << std::endl;
             break;
+        } else if (input == "setoption") {
+            setoption(ss, state);
         } else if (input == "quit") {
             return;
         }
