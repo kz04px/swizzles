@@ -40,6 +40,7 @@ int main(const int argc, const char **argv) {
     auto total_time = std::chrono::milliseconds(0);
 
     auto state = swizzles::uci::UCIState();
+    state.tt = std::make_shared<TT<swizzles::TTEntry>>(1);
     // Search settings
     auto settings = swizzles::search::SearchSettings();
     settings.type = swizzles::search::SearchType::Depth;

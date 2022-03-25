@@ -18,7 +18,7 @@ namespace swizzles::search {
 
     auto moves = pos.captures();
 
-    sort(moves);
+    sort(moves, chess::Move());
 
     for (const auto move : moves) {
         pos.makemove(move);

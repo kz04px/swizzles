@@ -3,7 +3,7 @@
 
 namespace swizzles::search {
 
-auto sort(chess::MoveList &movelist) noexcept -> void {
+auto sort(chess::MoveList &movelist, const chess::Move ttmove) noexcept -> void {
     if (movelist.empty()) {
         return;
     }
@@ -17,7 +17,11 @@ auto sort(chess::MoveList &movelist) noexcept -> void {
 
     // Score
     for (std::size_t i = 0; i < movelist.size(); ++i) {
-        scores[i] = mvvlva(movelist[i]);
+        if (movelist[i] == ttmove) {
+            scores[i] = 1'000'000;
+        } else {
+            scores[i] = mvvlva(movelist[i]);
+        }
     }
 
     // Sort

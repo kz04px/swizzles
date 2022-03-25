@@ -16,6 +16,7 @@ TEST_CASE("Search - Underpromotions") {
     }};
 
     auto state = swizzles::uci::UCIState();
+    state.tt = std::make_shared<TT<swizzles::TTEntry>>(1);
     // Search settings
     auto settings = swizzles::search::SearchSettings();
     settings.type = swizzles::search::SearchType::Depth;

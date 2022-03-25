@@ -11,6 +11,7 @@ TEST_CASE("Search - Movetime") {
     constexpr std::array<int, 3> movetimes = {20, 100, 200};
 
     auto state = swizzles::uci::UCIState();
+    state.tt = std::make_shared<TT<swizzles::TTEntry>>(1);
     // Search settings
     auto settings = swizzles::search::SearchSettings();
     settings.type = swizzles::search::SearchType::Movetime;

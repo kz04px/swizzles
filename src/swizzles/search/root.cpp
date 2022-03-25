@@ -38,12 +38,12 @@ namespace swizzles::search {
 
     std::vector<ThreadData> thread_data;
     for (int i = 0; i < state.threads.val; ++i) {
-        thread_data.emplace_back(i, &controller, state.pos);
+        thread_data.emplace_back(i, &controller, state.pos, state.tt);
     }
 
     std::vector<std::thread> threads;
 
-    for (int depth = 1; depth <= 128; ++depth) {
+    for (int depth = 1; depth < max_depth; ++depth) {
         controller.set_depth(depth);
 
         // Start the main search

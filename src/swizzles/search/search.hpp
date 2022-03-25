@@ -1,6 +1,7 @@
 #ifndef SWIZZLES_SEARCH_HPP
 #define SWIZZLES_SEARCH_HPP
 
+#include "constants.hpp"
 #include "stack.hpp"
 #include "thread_data.hpp"
 
@@ -10,14 +11,31 @@ class Position;
 
 namespace swizzles::search {
 
-static constexpr int inf_score = 2'000'000;
-static constexpr int mate_score = 1'000'000;
+[[nodiscard]] constexpr auto eval_to_tt(const int eval, const int ply) noexcept -> int {
+    if (eval > mate_score - max_depth) {
+        return eval + ply;
+    }
+    if (eval < -mate_score + max_depth) {
+        return eval - ply;
+    }
+    return eval;
+}
+
+[[nodiscard]] constexpr auto eval_from_tt(const int eval, const int ply) noexcept -> int {
+    if (eval > mate_score - max_depth) {
+        return eval - ply;
+    }
+    if (eval < -mate_score + max_depth) {
+        return eval + ply;
+    }
+    return eval;
+}
 
 [[nodiscard]] auto search(ThreadData &td,
                           SearchStack *ss,
                           chess::Position &pos,
                           int alpha,
-                          const int beta,
+                          int beta,
                           int depth) noexcept -> int;
 
 }  // namespace swizzles::search

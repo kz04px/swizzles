@@ -1,7 +1,9 @@
 #include <chess/position.hpp>
 #include <iostream>
 #include <sstream>
+#include <tt.hpp>
 #include "../settings.hpp"
+#include "../ttentry.hpp"
 #include "state.hpp"
 #include "uci.hpp"
 
@@ -42,6 +44,9 @@ auto listen() noexcept -> void {
             return;
         }
     }
+
+    // Initialise
+    state.tt = std::make_shared<TT<TTEntry>>(state.hash.val);
 
     bool quit = false;
     while (!quit) {

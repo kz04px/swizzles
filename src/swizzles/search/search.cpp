@@ -1,7 +1,9 @@
 #include "search.hpp"
 #include <chess/position.hpp>
 #include <limits>
+#include <tt.hpp>
 #include "../eval/eval.hpp"
+#include "../ttentry.hpp"
 #include "qsearch.hpp"
 #include "sort.hpp"
 
@@ -11,9 +13,31 @@ namespace swizzles::search {
                           SearchStack *ss,
                           chess::Position &pos,
                           int alpha,
-                          const int beta,
+                          int beta,
                           int depth) noexcept -> int {
     td.seldepth = std::max(td.seldepth, ss->ply);
+    const auto alpha_orig = alpha;
+
+    const auto ttentry = td.tt->poll(pos.hash());
+    if (ttentry.hash == pos.hash() && ttentry.depth >= depth) {
+        const auto eval = eval_from_tt(ttentry.eval, ss->ply);
+
+        if (ttentry.flag == TTFlag::Exact) {
+            ss->pv.clear();
+            ss->pv.push_back(ttentry.move);
+            return eval;
+        } else if (ttentry.flag == TTFlag::Lower) {
+            alpha = std::max(alpha, eval);
+        } else if (ttentry.flag == TTFlag::Upper) {
+            beta = std::min(beta, eval);
+        }
+
+        if (alpha >= beta) {
+            ss->pv.clear();
+            ss->pv.push_back(ttentry.move);
+            return eval;
+        }
+    }
 
     const auto is_root = ss->ply == 0;
     const auto in_check = pos.is_attacked(pos.get_kings(pos.turn()), !pos.turn());
@@ -22,7 +46,7 @@ namespace swizzles::search {
         depth++;
     }
 
-    if (depth == 0 || ss->ply == 127) {
+    if (depth == 0 || ss->ply == max_depth) {
         return qsearch(pos, alpha, beta);
     }
 
@@ -41,9 +65,10 @@ namespace swizzles::search {
     }
 
     auto best_score = std::numeric_limits<int>::min();
+    auto best_move = chess::Move();
     auto moves = pos.movegen();
 
-    sort(moves);
+    sort(moves, ttentry.move);
 
     for (const auto &move : moves) {
         pos.makemove(move);
@@ -60,6 +85,7 @@ namespace swizzles::search {
 
         if (score > best_score) {
             best_score = score;
+            best_move = move;
             ss->pv.clear();
             ss->pv.push_back(move);
         }
@@ -77,6 +103,19 @@ namespace swizzles::search {
             return 0;
         }
     }
+
+    auto new_ttentry = TTEntry();
+    new_ttentry.eval = eval_to_tt(best_score, ss->ply);
+    if (best_score <= alpha_orig) {
+        new_ttentry.flag = TTFlag::Upper;
+    } else if (best_score >= beta) {
+        new_ttentry.flag = TTFlag::Lower;
+    } else {
+        new_ttentry.flag = TTFlag::Exact;
+    }
+    new_ttentry.depth = depth;
+    new_ttentry.move = best_move;
+    td.tt->add(pos.hash(), new_ttentry);
 
     return best_score;
 }
