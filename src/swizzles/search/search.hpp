@@ -18,7 +18,7 @@ static constexpr int mate_score = 1'000'000;
                           chess::Position &pos,
                           int alpha,
                           const int beta,
-                          const int depth) noexcept -> int;
+                          int depth) noexcept -> int;
 
 }  // namespace swizzles::search
 

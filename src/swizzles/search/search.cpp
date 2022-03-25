@@ -12,11 +12,15 @@ namespace swizzles::search {
                           chess::Position &pos,
                           int alpha,
                           const int beta,
-                          const int depth) noexcept -> int {
+                          int depth) noexcept -> int {
     td.seldepth = std::max(td.seldepth, ss->ply);
 
     const auto is_root = ss->ply == 0;
     const auto in_check = pos.is_attacked(pos.get_kings(pos.turn()), !pos.turn());
+
+    if (in_check) {
+        depth++;
+    }
 
     if (depth == 0 || ss->ply == 127) {
         return qsearch(pos, alpha, beta);
