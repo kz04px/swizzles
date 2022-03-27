@@ -1,8 +1,8 @@
+#include "root.hpp"
 #include <chess/position.hpp>
 #include <chrono>
 #include <thread>
 #include "controller.hpp"
-#include "root.hpp"
 #include "search.hpp"
 
 namespace swizzles::search {
