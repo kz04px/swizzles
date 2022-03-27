@@ -71,7 +71,7 @@ namespace swizzles::search {
     }
 
 	// Null Move Pruning
-	if (!ss->null_move && depth >= 3 && !in_check && !is_endgame(pos)) {  // && !pvnode
+	if (!ss->null_move && depth >= 3 && !in_check && !is_endgame(pos)) {
 		pos.makenull();
 
 		(ss + 1)->null_move = true;
