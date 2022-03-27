@@ -1,10 +1,10 @@
+#include "search.hpp"
 #include <chess/position.hpp>
 #include <limits>
 #include <tt.hpp>
 #include "../eval/eval.hpp"
 #include "../ttentry.hpp"
 #include "qsearch.hpp"
-#include "search.hpp"
 #include "sort.hpp"
 
 namespace swizzles::search {
@@ -85,6 +85,7 @@ namespace swizzles::search {
             return score;
         }
     }
+    
     auto best_score = std::numeric_limits<int>::min();
     auto best_move = chess::Move();
     auto moves = pos.movegen();
