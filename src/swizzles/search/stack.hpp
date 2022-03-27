@@ -7,7 +7,7 @@ namespace swizzles::search {
 
 struct SearchStack {
     int ply = 0;
-	bool null_move = false;
+    bool null_move = false;
     PV pv;
 };
 

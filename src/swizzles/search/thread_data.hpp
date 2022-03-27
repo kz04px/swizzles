@@ -22,7 +22,7 @@ struct ThreadData {
         int i = 0;
         for (auto &s : stack) {
             s.ply = i;
-			s.null_move = false;
+            s.null_move = false;
             i++;
         }
     }
