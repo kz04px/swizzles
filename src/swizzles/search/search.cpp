@@ -8,6 +8,12 @@
 #include "sort.hpp"
 
 namespace swizzles::search {
+	
+[[nodiscard]] auto is_endgame(const chess::Position &pos) noexcept -> bool {
+    const auto piece_mask = pos.get_knights() | pos.get_bishops() | pos.get_rooks() | pos.get_queens();
+    return (piece_mask & pos.colour(pos.turn())).count() <= 2;
+}
+
 
 [[nodiscard]] auto search(ThreadData &td,
                           SearchStack *ss,
@@ -64,6 +70,22 @@ namespace swizzles::search {
         return 0;
     }
 
+	// Null Move Pruning
+	if (!ss->null_move && depth >= 3 && !in_check && !is_endgame(pos)) {  // && !pvnode
+		pos.makenull();
+
+		(ss + 1)->null_move = true;
+		const auto score = -search(td, ss + 1, pos, -beta, -beta + 1, depth - 1 - 2);
+		(ss + 1)->null_move = false;
+
+		pos.undonull();
+
+		ss->pv.clear();
+
+		if (score >= beta) {
+			return score;
+		}
+	}
     auto best_score = std::numeric_limits<int>::min();
     auto best_move = chess::Move();
     auto moves = pos.movegen();
