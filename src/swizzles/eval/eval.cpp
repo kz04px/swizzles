@@ -14,21 +14,17 @@ static constexpr std::array<Score, 6> material = {{
     {0, 0},
 }};
 
-static int bishopMgMobility[14] = {-25, -11, -6, -1, 3, 6, 9, 12, 14, 17, 19, 21, 23, 25};
+static constexpr std::array<Score, 14> bishop_mob_bonus = {{
+{-25, -50}, {-11, -22}, {-6, -11}, {-1, -2}, {3, 6}, {6, 12}, {9, 18}, {12, 24}, {14, 29}, {17, 34}, {19, 38}, {21, 42}, {23, 46}, {25, 50},
+}};
 
-static int bishopEgMobility[14] = {-50, -22, -11, -2, 6, 12, 18, 24, 29, 34, 38, 42, 46, 50};
+static constexpr std::array<Score, 15> rook_mob_bonus = {{
+{-10, -50}, {-4, -22}, {-2, -11}, {0, -2}, {2, 6}, {3, 12}, {4, 18}, {5, 24}, {6, 29}, {8, 34}, {8, 38}, {9, 42}, {10, 46}, {11, 50}, {12, 54},
+}};
 
-static int rookMgMobility[15] = {-10, -4, -2, 0, 2, 3, 4, 5, 6, 8, 8, 9, 10, 11, 12};
-
-static int rookEgMobility[15] = {-50, -22, -11, -2, 6, 12, 18, 24, 29, 34, 38, 42, 46, 50, 54};
-
-static int queenMgMobility[28] = {-10, -6, -5, -4, -2, -2, -1, 0,  1, 2, 2, 3, 3, 4, 4, 5, 6, 6, 6,
-
-                                  7,   7,  8,  8,  9,  9,  10, 10, 10};
-
-static int queenEgMobility[28] = {-50, -30, -22, -16, -10, -6, -2, 2,  6,  10, 13, 16, 19, 22, 24,
-
-                                  27,  30,  32,  34,  37,  39, 41, 43, 45, 47, 50, 51, 53};
+static constexpr std::array<Score, 28> queen_mob_bonus = {{
+{-10, -50}, {-6, -30}, {-5, -22}, {-4, -16}, {-2, -10}, {-2, -6}, {-1, -2}, {0, 2}, {1, 6}, {2, 10}, {2, 13}, {3, 16}, {3, 19}, {4, 22}, {4, 24}, {5, 27}, {6, 30}, {6, 32}, {6, 34}, {7, 37}, {7, 39}, {8, 41}, {8, 43}, {9, 45}, {9, 47}, {10, 50}, {10, 51}, {10, 53},
+}};
 
 template <chess::Colour us>
 [[nodiscard]] auto eval_us(const chess::Position &pos) noexcept -> Score {
@@ -64,15 +60,15 @@ template <chess::Colour us>
     // Mobility for bishops, rooks, and queens
     for (const auto square : pos.get_bishops(us)) {
         auto count = chess::magic::bishop_moves(square, pos.get_occupied()).count();
-        score += Score{bishopMgMobility[count], bishopEgMobility[count]};
+        score += bishop_mob_bonus[count];
     }
     for (const auto square : pos.get_rooks(us)) {
         auto count = chess::magic::rook_moves(square, pos.get_occupied()).count();
-        score += Score{rookMgMobility[count], rookEgMobility[count]};
+        score += rook_mob_bonus[count];
     }
     for (const auto square : pos.get_queens(us)) {
         auto count = chess::magic::queen_moves(square, pos.get_occupied()).count();
-        score += Score{queenMgMobility[count], queenEgMobility[count]};
+        score += queen_mob_bonus[count];
     }
 
     return score;
