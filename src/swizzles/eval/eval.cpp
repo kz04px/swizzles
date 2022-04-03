@@ -1,4 +1,5 @@
 #include "eval.hpp"
+#include <chess/magic.hpp>
 #include <chess/position.hpp>
 #include "pst.hpp"
 
@@ -11,6 +12,47 @@ static constexpr std::array<Score, 6> material = {{
     {500, 500},
     {900, 900},
     {0, 0},
+}};
+
+static constexpr std::array<Score, 14> bishop_mob_bonus = {{
+    {-25, -50},
+    {-11, -22},
+    {-6, -11},
+    {-1, -2},
+    {3, 6},
+    {6, 12},
+    {9, 18},
+    {12, 24},
+    {14, 29},
+    {17, 34},
+    {19, 38},
+    {21, 42},
+    {23, 46},
+    {25, 50},
+}};
+
+static constexpr std::array<Score, 15> rook_mob_bonus = {{
+    {-10, -50},
+    {-4, -22},
+    {-2, -11},
+    {0, -2},
+    {2, 6},
+    {3, 12},
+    {4, 18},
+    {5, 24},
+    {6, 29},
+    {8, 34},
+    {8, 38},
+    {9, 42},
+    {10, 46},
+    {11, 50},
+    {12, 54},
+}};
+
+static constexpr std::array<Score, 28> queen_mob_bonus = {{
+    {-10, -50}, {-6, -30}, {-5, -22}, {-4, -16}, {-2, -10}, {-2, -6}, {-1, -2}, {0, 2},   {1, 6},  {2, 10},
+    {2, 13},    {3, 16},   {3, 19},   {4, 22},   {4, 24},   {5, 27},  {6, 30},  {6, 32},  {6, 34}, {7, 37},
+    {7, 39},    {8, 41},   {8, 43},   {9, 45},   {9, 47},   {10, 50}, {10, 51}, {10, 53},
 }};
 
 template <chess::Colour us>
@@ -42,6 +84,20 @@ template <chess::Colour us>
     }
     for (const auto sq : pos.get_kings(us)) {
         score += pst_value<us>(chess::PieceType::King, sq);
+    }
+
+    // Mobility for bishops, rooks, and queens
+    for (const auto square : pos.get_bishops(us)) {
+        const auto count = chess::magic::bishop_moves(square, pos.get_occupied()).count();
+        score += bishop_mob_bonus[count];
+    }
+    for (const auto square : pos.get_rooks(us)) {
+        const auto count = chess::magic::rook_moves(square, pos.get_occupied()).count();
+        score += rook_mob_bonus[count];
+    }
+    for (const auto square : pos.get_queens(us)) {
+        const auto count = chess::magic::queen_moves(square, pos.get_occupied()).count();
+        score += queen_mob_bonus[count];
     }
 
     return score;
