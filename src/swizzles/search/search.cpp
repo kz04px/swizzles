@@ -14,7 +14,7 @@ namespace swizzles::search {
     return (piece_mask & pos.colour(pos.turn())).count() <= 2;
 }
 
-auto reduction(const chess::Move move,
+[[nodiscard]] auto reduction(const chess::Move move,
                const int depth,
                const int legal_moves,
                const bool in_check,
