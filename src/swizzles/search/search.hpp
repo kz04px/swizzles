@@ -31,6 +31,13 @@ namespace swizzles::search {
     return eval;
 }
 
+auto reduction(const chess::Move move,
+               const int depth,
+               const int legal_moves,
+               const bool in_check,
+               const bool gives_check,
+               const bool is_root);
+
 [[nodiscard]] auto search(ThreadData &td,
                           SearchStack *ss,
                           chess::Position &pos,

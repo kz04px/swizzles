@@ -14,6 +14,22 @@ namespace swizzles::search {
     return (piece_mask & pos.colour(pos.turn())).count() <= 2;
 }
 
+auto reduction(const chess::Move move,
+               const int depth,
+               const int legal_moves,
+               const bool in_check,
+               const bool gives_check,
+               const bool is_root) {
+    if (!is_root && !in_check && legal_moves > 4 && depth >= 3 && move.promo() == chess::PieceType::None &&
+        move.captured() == chess::PieceType::None && !gives_check) {
+        auto red = 1;
+        if (depth >= 6) red = 2;
+        if (legal_moves >= 20) red += 1;
+        return red;
+    }
+    return 0;
+}
+
 [[nodiscard]] auto search(ThreadData &td,
                           SearchStack *ss,
                           chess::Position &pos,
@@ -85,7 +101,7 @@ namespace swizzles::search {
             return score;
         }
     }
-
+    auto legal_moves = 0;
     auto best_score = std::numeric_limits<int>::min();
     auto best_move = chess::Move();
     auto moves = pos.movegen();
@@ -101,8 +117,16 @@ namespace swizzles::search {
         }
 
         td.nodes++;
+        legal_moves++;
+        const auto gives_check = pos.is_attacked(pos.get_kings(pos.turn()), !pos.turn());
 
-        const auto score = -search(td, ss + 1, pos, -beta, -alpha, depth - 1);
+        // LMR
+        auto r = reduction(move, depth, legal_moves, in_check, gives_check, is_root);
+
+        auto score = -search(td, ss + 1, pos, -beta, -alpha, depth - 1 - r);
+        if (r > 0 && score > alpha) {  // re-search with no reduction
+            score = -search(td, ss + 1, pos, -beta, -alpha, depth - 1);
+        }
         pos.undomove();
 
         if (score > best_score) {
