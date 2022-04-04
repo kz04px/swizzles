@@ -56,6 +56,34 @@ static constexpr std::array<Score, 28> queen_mob_bonus = {{
 }};
 
 template <chess::Colour us>
+[[nodiscard]] constexpr auto shield(const chess::Square sq) noexcept -> chess::Bitboard {
+    auto bb = chess::Bitboard(sq);
+    if constexpr (us == chess::Colour::White) {
+        bb = bb.north();
+        bb |= bb.north();
+    } else {
+        bb = bb.south();
+        bb |= bb.south();
+    }
+    bb |= bb.east();
+    bb |= bb.west();
+    return bb;
+}
+
+static_assert(shield<chess::Colour::White>(chess::Square::G1) == chess::Bitboard(0xE0E000ULL));
+static_assert(shield<chess::Colour::Black>(chess::Square::G8) == chess::Bitboard(0xE0E00000000000ULL));
+static_assert(shield<chess::Colour::White>(chess::Square::A1) == chess::Bitboard(0x30300ULL));
+static_assert(shield<chess::Colour::Black>(chess::Square::A8) == chess::Bitboard(0x3030000000000ULL));
+
+template <chess::Colour us>
+[[nodiscard]] auto king_safety(const chess::Position &pos) noexcept -> Score {
+    const auto ksq = pos.get_king(us);
+    const auto pawns = shield<us>(ksq) & pos.get_pawns(us);
+    return Score{20, 0} * pawns.count();
+}
+
+template <chess::Colour us>
+
 [[nodiscard]] auto eval_us(const chess::Position &pos) noexcept -> Score {
     Score score;
 
@@ -99,6 +127,9 @@ template <chess::Colour us>
         const auto count = chess::magic::queen_moves(square, pos.get_occupied()).count();
         score += queen_mob_bonus[count];
     }
+
+    // King safety
+    score += king_safety<us>(pos);
 
     return score;
 }
