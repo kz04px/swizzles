@@ -30,7 +30,7 @@ auto sort(chess::MoveList &movelist, const chess::Move ttmove, const ThreadData 
             if (history_score > 700'000) {
                 history_score = 700'000;
             }
-            scores[i] = history_score;
+            scores[i] = static_cast<int>(history_score);
         }
     }
 

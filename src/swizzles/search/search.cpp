@@ -117,7 +117,7 @@ namespace swizzles::search {
         if (alpha >= beta) {
             if (move.captured() == chess::PieceType::None)
                 td.history_score[chess::index(pos.turn())][chess::index(move.from())][chess::index(move.to())] +=
-                    static_cast<int>(std::pow(2.0f, static_cast<float>(depth)));
+                    1ULL << depth;
             break;
         }
     }

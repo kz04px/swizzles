@@ -32,7 +32,7 @@ struct ThreadData {
     int seldepth = 0;
     int tbhits = 0;
     std::array<SearchStack, max_depth + 1> stack;
-    int history_score[2][64][64] = {};
+    std::uint64_t history_score[2][64][64] = {};
     SearchController *controller = nullptr;
     chess::Position pos;
     std::shared_ptr<TT<TTEntry>> tt;
