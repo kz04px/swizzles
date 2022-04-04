@@ -83,7 +83,6 @@ template <chess::Colour us>
 }
 
 template <chess::Colour us>
-
 [[nodiscard]] auto eval_us(const chess::Position &pos) noexcept -> Score {
     Score score;
 
