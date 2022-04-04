@@ -15,11 +15,11 @@ namespace swizzles::search {
 }
 
 [[nodiscard]] auto reduction(const chess::Move move,
-               const int depth,
-               const int legal_moves,
-               const bool in_check,
-               const bool gives_check,
-               const bool is_root) noexcept -> int {
+                             const int depth,
+                             const int legal_moves,
+                             const bool in_check,
+                             const bool gives_check,
+                             const bool is_root) noexcept -> int {
     if (!is_root && !in_check && legal_moves > 4 && depth >= 3 && move.promo() == chess::PieceType::None &&
         move.captured() == chess::PieceType::None && !gives_check) {
         auto r = 1;
@@ -87,6 +87,18 @@ namespace swizzles::search {
 
     if (td.controller->should_stop()) {
         return 0;
+    }
+
+    // Static Null Move Pruning
+    const auto static_eval = eval::eval(pos);
+    if (!ss->null_move && abs(beta) <= mate_score - max_depth) {
+        if (depth == 1 && static_eval - 300 > beta) {
+            return beta;
+        } else if (depth == 2 && static_eval - 500 > beta) {
+            return beta;
+        } else if (depth == 3 && static_eval - 900 > beta) {
+            depth -= 1;
+        }
     }
 
     // Null Move Pruning
