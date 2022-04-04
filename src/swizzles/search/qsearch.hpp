@@ -7,7 +7,7 @@ class Position;
 
 namespace swizzles::search {
 
-[[nodiscard]] auto qsearch(chess::Position &pos, int alpha, const int beta) noexcept -> int;
+[[nodiscard]] auto qsearch(const ThreadData &td, chess::Position &pos, int alpha, const int beta) noexcept -> int;
 
 }  // namespace swizzles::search
 

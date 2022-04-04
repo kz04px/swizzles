@@ -52,7 +52,7 @@ namespace swizzles::search {
     }
 
     if (depth == 0 || ss->ply == max_depth) {
-        return qsearch(pos, alpha, beta);
+        return qsearch(td, pos, alpha, beta);
     }
 
     if (pos.halfmoves() >= 100) {
@@ -85,12 +85,12 @@ namespace swizzles::search {
             return score;
         }
     }
-    
+
     auto best_score = std::numeric_limits<int>::min();
     auto best_move = chess::Move();
     auto moves = pos.movegen();
 
-    sort(moves, ttentry.move);
+    sort(moves, ttentry.move, td, pos.turn());
 
     for (const auto &move : moves) {
         pos.makemove(move);
@@ -114,6 +114,10 @@ namespace swizzles::search {
 
         alpha = std::max(alpha, score);
         if (alpha >= beta) {
+            if (move.captured() == chess::PieceType::None && depth < 64) {
+                td.history_score[chess::index(pos.turn())][chess::index(move.from())][chess::index(move.to())] +=
+                    1ULL << depth;
+            }
             break;
         }
     }
