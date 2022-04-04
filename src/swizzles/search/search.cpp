@@ -1,6 +1,5 @@
 #include "search.hpp"
 #include <chess/position.hpp>
-#include <cmath>
 #include <limits>
 #include <tt.hpp>
 #include "../eval/eval.hpp"
