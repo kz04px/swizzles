@@ -115,9 +115,10 @@ namespace swizzles::search {
 
         alpha = std::max(alpha, score);
         if (alpha >= beta) {
-            if (move.captured() == chess::PieceType::None)
+            if (move.captured() == chess::PieceType::None && depth < 64) {
                 td.history_score[chess::index(pos.turn())][chess::index(move.from())][chess::index(move.to())] +=
                     1ULL << depth;
+            }
             break;
         }
     }
