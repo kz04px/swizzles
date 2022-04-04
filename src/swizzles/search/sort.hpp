@@ -3,10 +3,12 @@
 
 #include <chess/move.hpp>
 #include <chess/movelist.hpp>
+#include "search.hpp"
 
 namespace swizzles::search {
 
-auto sort(chess::MoveList &movelist, const chess::Move ttmove) noexcept -> void;
+auto sort(chess::MoveList &movelist, const chess::Move ttmove, const ThreadData &td, const chess::Colour turn) noexcept
+    -> void;
 
 }  // namespace swizzles::search
 

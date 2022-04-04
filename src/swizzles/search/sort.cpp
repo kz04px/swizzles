@@ -1,9 +1,10 @@
 #include "sort.hpp"
 #include <array>
-
+#include "search.hpp"
 namespace swizzles::search {
 
-auto sort(chess::MoveList &movelist, const chess::Move ttmove) noexcept -> void {
+auto sort(chess::MoveList &movelist, const chess::Move ttmove, const ThreadData &td, const chess::Colour turn) noexcept
+    -> void {
     if (movelist.empty()) {
         return;
     }
@@ -18,9 +19,17 @@ auto sort(chess::MoveList &movelist, const chess::Move ttmove) noexcept -> void 
     // Score
     for (std::size_t i = 0; i < movelist.size(); ++i) {
         if (movelist[i] == ttmove) {
-            scores[i] = 1'000'000;
+            scores[i] = 2'000'000;
+        } else if (movelist[i].captured() != chess::PieceType::None) {
+            scores[i] = 1'000'000 + mvvlva(movelist[i]);
         } else {
-            scores[i] = mvvlva(movelist[i]);
+            // history sorting
+            auto history_score =
+                td.history_score[chess::index(turn)][chess::index(movelist[i].from())][chess::index(movelist[i].to())];
+            if (history_score > 700'000) {
+                history_score = 700'000;
+            }
+            scores[i] = history_score;
         }
     }
 
