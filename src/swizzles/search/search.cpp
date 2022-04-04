@@ -22,10 +22,14 @@ auto reduction(const chess::Move move,
                const bool is_root) {
     if (!is_root && !in_check && legal_moves > 4 && depth >= 3 && move.promo() == chess::PieceType::None &&
         move.captured() == chess::PieceType::None && !gives_check) {
-        auto red = 1;
-        if (depth >= 6) red = 2;
-        if (legal_moves >= 20) red += 1;
-        return red;
+        auto r = 1;
+        if (depth >= 6) {
+            r = 2;
+        }
+        if (legal_moves >= 20) {
+            r += 1;
+        }
+        return r;
     }
     return 0;
 }
@@ -101,6 +105,7 @@ auto reduction(const chess::Move move,
             return score;
         }
     }
+
     auto legal_moves = 0;
     auto best_score = std::numeric_limits<int>::min();
     auto best_move = chess::Move();
@@ -121,10 +126,11 @@ auto reduction(const chess::Move move,
         const auto gives_check = pos.is_attacked(pos.get_kings(pos.turn()), !pos.turn());
 
         // LMR
-        auto r = reduction(move, depth, legal_moves, in_check, gives_check, is_root);
+        const auto r = reduction(move, depth, legal_moves, in_check, gives_check, is_root);
 
         auto score = -search(td, ss + 1, pos, -beta, -alpha, depth - 1 - r);
-        if (r > 0 && score > alpha) {  // re-search with no reduction
+        // re-search with no reduction
+        if (r > 0 && score > alpha) {
             score = -search(td, ss + 1, pos, -beta, -alpha, depth - 1);
         }
         pos.undomove();
