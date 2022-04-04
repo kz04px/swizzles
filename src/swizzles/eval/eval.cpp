@@ -1,5 +1,6 @@
 #include "eval.hpp"
 #include <chess/magic.hpp>
+#include <chess/passed.hpp>
 #include <chess/position.hpp>
 #include "pst.hpp"
 
@@ -53,6 +54,17 @@ static constexpr std::array<Score, 28> queen_mob_bonus = {{
     {-10, -50}, {-6, -30}, {-5, -22}, {-4, -16}, {-2, -10}, {-2, -6}, {-1, -2}, {0, 2},   {1, 6},  {2, 10},
     {2, 13},    {3, 16},   {3, 19},   {4, 22},   {4, 24},   {5, 27},  {6, 30},  {6, 32},  {6, 34}, {7, 37},
     {7, 39},    {8, 41},   {8, 43},   {9, 45},   {9, 47},   {10, 50}, {10, 51}, {10, 53},
+}};
+
+static constexpr std::array<Score, 8> passed_pawn_bonus = {{
+    {0, 0},
+    {0, 0},
+    {0, 0},
+    {6, 12},
+    {20, 40},
+    {44, 88},
+    {73, 146},
+    {0, 0},
 }};
 
 template <chess::Colour us>
@@ -129,6 +141,17 @@ template <chess::Colour us>
 
     // King safety
     score += king_safety<us>(pos);
+
+    // Passed pawn bonus
+    const auto passed = chess::get_passed<us>(pos.get_pawns(us), pos.get_pawns(!us));
+    for (const auto square : passed) {
+        const auto rank = chess::rank(square);
+        if constexpr (us == chess::Colour::White) {
+            score += passed_pawn_bonus[rank];
+        } else {
+            score += passed_pawn_bonus[7 - rank];
+        }
+    }
 
     return score;
 }
