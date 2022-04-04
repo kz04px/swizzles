@@ -92,6 +92,7 @@ namespace swizzles::search {
     // Static Null Move Pruning
     if (!ss->null_move && std::abs(beta) <= mate_score - max_depth && !is_root) {
         const auto static_eval = eval::eval(pos);
+        
         if (depth == 1 && static_eval - 300 > beta) {
             return beta;
         } else if (depth == 2 && static_eval - 500 > beta) {
