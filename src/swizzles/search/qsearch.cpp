@@ -5,7 +5,7 @@
 
 namespace swizzles::search {
 
-[[nodiscard]] auto qsearch(chess::Position &pos, int alpha, const int beta, const ThreadData &td) noexcept -> int {
+[[nodiscard]] auto qsearch(const ThreadData &td, chess::Position &pos, int alpha, const int beta) noexcept -> int {
     const auto stand_pat = eval::eval(pos);
 
     if (stand_pat >= beta) {
@@ -21,7 +21,7 @@ namespace swizzles::search {
 
     for (const auto move : moves) {
         pos.makemove(move);
-        const auto score = -qsearch(pos, -beta, -alpha, td);
+        const auto score = -qsearch(td, pos, -beta, -alpha);
         pos.undomove();
 
         if (score >= beta) {

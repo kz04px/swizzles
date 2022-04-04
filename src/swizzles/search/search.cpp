@@ -1,6 +1,6 @@
 #include "search.hpp"
-#include <math.h>
 #include <chess/position.hpp>
+#include <cmath>
 #include <limits>
 #include <tt.hpp>
 #include "../eval/eval.hpp"
@@ -53,7 +53,7 @@ namespace swizzles::search {
     }
 
     if (depth == 0 || ss->ply == max_depth) {
-        return qsearch(pos, alpha, beta, td);
+        return qsearch(td, pos, alpha, beta);
     }
 
     if (pos.halfmoves() >= 100) {
@@ -117,7 +117,7 @@ namespace swizzles::search {
         if (alpha >= beta) {
             if (move.captured() == chess::PieceType::None)
                 td.history_score[chess::index(pos.turn())][chess::index(move.from())][chess::index(move.to())] +=
-                    static_cast<int>(pow(2, static_cast<float>(depth)));
+                    static_cast<int>(std::pow(2, static_cast<float>(depth)));
             break;
         }
     }

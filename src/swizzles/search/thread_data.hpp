@@ -25,13 +25,6 @@ struct ThreadData {
             s.null_move = false;
             i++;
         }
-
-        for (int j = 0; j < 64; j++) {
-            for (int k = 0; k < 64; k++) {
-                history_score[index(chess::Colour::White)][j][k] = 0;
-                history_score[index(chess::Colour::Black)][j][k] = 0;
-            }
-        }
     }
 
     int id = 0;
@@ -39,7 +32,7 @@ struct ThreadData {
     int seldepth = 0;
     int tbhits = 0;
     std::array<SearchStack, max_depth + 1> stack;
-    int history_score[2][64][64];
+    int history_score[2][64][64] = {};
     SearchController *controller = nullptr;
     chess::Position pos;
     std::shared_ptr<TT<TTEntry>> tt;

@@ -1,6 +1,7 @@
 #include "sort.hpp"
 #include <array>
 #include "search.hpp"
+
 namespace swizzles::search {
 
 auto sort(chess::MoveList &movelist, const chess::Move ttmove, const ThreadData &td, const chess::Colour turn) noexcept
