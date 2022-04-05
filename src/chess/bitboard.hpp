@@ -42,7 +42,7 @@ class BitboardIterator {
    public:
     [[nodiscard]] constexpr BitboardIterator() noexcept = default;
 
-    [[nodiscard]] constexpr BitboardIterator(const std::uint64_t mask) noexcept : m_mask(mask) {
+    [[nodiscard]] constexpr explicit BitboardIterator(const std::uint64_t mask) noexcept : m_mask(mask) {
     }
 
     [[nodiscard]] constexpr auto operator!=(const BitboardIterator rhs) const noexcept -> bool {
@@ -220,7 +220,7 @@ class Bitboard {
     }
 
     [[nodiscard]] constexpr auto begin() const noexcept -> const_iterator {
-        return {m_mask};
+        return BitboardIterator{m_mask};
     }
 
     [[nodiscard]] constexpr auto end() const noexcept -> const_iterator {

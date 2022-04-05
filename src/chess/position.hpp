@@ -29,7 +29,7 @@ class Position {
    public:
     [[nodiscard]] Position() noexcept = default;
 
-    [[nodiscard]] Position(const std::string_view fen) noexcept {
+    [[nodiscard]] explicit Position(const std::string_view fen) noexcept {
         set_fen(fen);
     }
 

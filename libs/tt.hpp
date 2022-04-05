@@ -10,7 +10,7 @@ class TT {
    public:
     [[nodiscard]] constexpr TT() = default;
 
-    [[nodiscard]] TT(unsigned int mb) {
+    [[nodiscard]] explicit TT(unsigned int mb) {
         if (mb == 0) {
             mb = 1;
         }
