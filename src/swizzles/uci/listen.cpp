@@ -21,8 +21,8 @@ auto operator<<(std::ostream &os, const settings::Spin &spin) noexcept -> std::o
 auto listen() noexcept -> void {
     UCIState state;
 
-    std::cout << "engine Swizzles" << std::endl;
-    std::cout << "author kz04px" << std::endl;
+    std::cout << "id name Swizzles" << std::endl;
+    std::cout << "id author kz04px" << std::endl;
 
     // Print options
     std::cout << "option name UCI_Chess960 type check default false\n";
