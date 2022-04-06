@@ -21,7 +21,14 @@ namespace swizzles::search {
 
     for (const auto move : moves) {
         pos.makemove(move);
+
+        if (pos.is_attacked(pos.get_king(!pos.turn()), pos.turn())) {
+            pos.undomove();
+            continue;
+        }
+
         const auto score = -qsearch(td, pos, -beta, -alpha);
+
         pos.undomove();
 
         if (score >= beta) {
