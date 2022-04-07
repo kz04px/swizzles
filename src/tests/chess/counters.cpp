@@ -38,7 +38,7 @@ TEST_CASE("Position counters") {
     }};
 
     for (const auto &[half, full, movestrings] : tests) {
-        INFO("Moves: " << movestrings);
+        INFO("Moves: ", movestrings);
         auto pos = chess::Position("startpos");
 
         std::stringstream ss(movestrings);
