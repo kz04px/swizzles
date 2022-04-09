@@ -115,6 +115,14 @@ class Position {
         return ((m_colour[0] | m_colour[1]) & bb).empty();
     }
 
+    [[nodiscard]] constexpr auto get_colours() const noexcept -> std::array<Bitboard, 2> {
+        return m_colour;
+    }
+
+    [[nodiscard]] constexpr auto get_pieces() const noexcept -> std::array<Bitboard, 6> {
+        return m_piece;
+    }
+
     [[nodiscard]] constexpr auto get_pawns() const noexcept -> Bitboard {
         return m_piece[index(PieceType::Pawn)];
     }

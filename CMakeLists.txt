@@ -63,6 +63,7 @@ add_executable(
     src/tests/chess/perft_shallow.cpp
     src/tests/chess/perft.cpp
     src/tests/chess/perft960.cpp
+    src/tests/chess/see.cpp
     src/tests/chess/threefold.cpp
     src/tests/chess/validate.cpp
     src/tests/chess/zobrist.cpp
@@ -92,6 +93,7 @@ add_executable(
     src/chess/makemove.cpp
     src/chess/movegen.cpp
     src/chess/predict_hash.cpp
+    src/chess/see.cpp
     src/chess/set_fen.cpp
     src/chess/undomove.cpp
     src/chess/zobrist.cpp
