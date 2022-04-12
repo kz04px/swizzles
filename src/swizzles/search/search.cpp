@@ -126,6 +126,29 @@ namespace swizzles::search {
 
     sort(moves, ttentry.move, td, pos.turn());
 
+    // Prob cut
+    if (!is_root && depth >= 5 && std::abs(beta) < mate_score - max_depth) {
+        const auto r_beta = std::min(mate_score - max_depth, beta + 100);
+        for (const auto &move : moves) {
+            pos.makemove(move);
+
+            if (pos.is_attacked(pos.get_king(!pos.turn()), pos.turn())) {
+                pos.undomove();
+                continue;
+            }
+
+            const auto prob_cut_score = -search(td, ss + 1, pos, -r_beta, -r_beta + 1, depth - 1 - 3);
+
+            pos.undomove();
+
+            if (prob_cut_score >= r_beta) {
+                ss->pv.clear();
+                ss->pv.push_back(move);
+                return prob_cut_score;
+            }
+        }
+    }
+
     for (const auto &move : moves) {
         pos.makemove(move);
 
