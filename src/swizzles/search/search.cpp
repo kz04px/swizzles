@@ -89,10 +89,10 @@ namespace swizzles::search {
         return 0;
     }
 
+    const auto static_eval = eval::eval(pos);
+
     // Static Null Move Pruning
     if (!ss->null_move && !is_root && std::abs(beta) <= mate_score - max_depth) {
-        const auto static_eval = eval::eval(pos);
-
         if (depth == 1 && static_eval - 300 > beta) {
             return beta;
         } else if (depth == 2 && static_eval - 500 > beta) {
@@ -125,6 +125,27 @@ namespace swizzles::search {
     auto moves = pos.movegen();
 
     sort(moves, ttentry.move, td, pos.turn());
+
+    // Prob cut
+    if (depth >= 5 && std::abs(beta) < mate_score - max_depth) {
+        int r_beta = std::min(mate_score - max_depth, beta + 100);
+        for (const auto &move : moves) {
+            pos.makemove(move);
+
+            if (pos.is_attacked(pos.get_king(!pos.turn()), pos.turn())) {
+                pos.undomove();
+                continue;
+            }
+
+            auto prob_cut_score = -search(td, ss + 1, pos, -r_beta, -r_beta + 1, depth - 1 - 3);
+
+            pos.undomove();
+
+            if (prob_cut_score >= r_beta) {
+                return prob_cut_score;
+            }
+        }
+    }
 
     for (const auto &move : moves) {
         pos.makemove(move);
