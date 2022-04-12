@@ -136,16 +136,23 @@ namespace swizzles::search {
 
         td.nodes++;
         legal_moves++;
-        const auto gives_check = pos.is_attacked(pos.get_kings(pos.turn()), !pos.turn());
 
-        // LMR
-        const auto r = reduction(move, depth, legal_moves, in_check, gives_check, is_root);
+        // Principal Variation Search
+        auto score = 0;
 
-        auto score = -search(td, ss + 1, pos, -beta, -alpha, depth - 1 - r);
-        // re-search with no reduction
-        if (r > 0 && score > alpha) {
+        if (legal_moves == 1) {
             score = -search(td, ss + 1, pos, -beta, -alpha, depth - 1);
+        } else {
+            // LMR
+            const auto gives_check = pos.is_attacked(pos.get_kings(pos.turn()), !pos.turn());
+            const auto r = reduction(move, depth, legal_moves, in_check, gives_check, is_root);
+
+            score = -search(td, ss + 1, pos, -alpha - 1, -alpha, depth - 1 - r);
+            if (score > alpha) {
+                score = -search(td, ss + 1, pos, -beta, -alpha, depth - 1);
+            }
         }
+
         pos.undomove();
 
         if (score > best_score) {
