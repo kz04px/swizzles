@@ -1,6 +1,9 @@
 #ifndef CHESS_MOVE_HPP
 #define CHESS_MOVE_HPP
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
 #include <ostream>
 #include "piece.hpp"
 #include "square.hpp"
@@ -60,6 +63,10 @@ class Move {
         set_to(to);
         set_captured(captured);
         set_promo(promo);
+    }
+
+    [[nodiscard]] constexpr auto data() const noexcept -> std::uint32_t {
+        return m_data;
     }
 
     [[nodiscard]] constexpr auto operator==(const Move &rhs) const noexcept -> bool {
@@ -169,5 +176,12 @@ static_assert(Move(MoveType::Promo, PieceType::Pawn, Square::E7, Square::E8, Pie
                   .promo() == PieceType::Queen);
 
 }  // namespace chess
+
+template <>
+struct std::hash<chess::Move> {
+    [[nodiscard]] auto operator()(const chess::Move &move) const -> std::size_t {
+        return move.data();
+    }
+};
 
 #endif

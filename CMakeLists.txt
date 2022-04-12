@@ -60,6 +60,7 @@ add_executable(
     src/tests/main.cpp
     src/tests/chess/counters.cpp
     src/tests/chess/fen.cpp
+    src/tests/chess/is_pseudolegal.cpp
     src/tests/chess/perft_shallow.cpp
     src/tests/chess/perft.cpp
     src/tests/chess/perft960.cpp
@@ -89,6 +90,7 @@ add_executable(
     src/chess/captures.cpp
     src/chess/get_fen.cpp
     src/chess/is_attacked.cpp
+    src/chess/is_pseudolegal.cpp
     src/chess/magic.cpp
     src/chess/makemove.cpp
     src/chess/movegen.cpp

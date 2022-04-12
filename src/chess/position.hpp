@@ -83,6 +83,14 @@ class Position {
         return repeats;
     }
 
+    [[nodiscard]] constexpr auto get_us() const noexcept -> Bitboard {
+        return m_colour[static_cast<std::size_t>(m_turn)];
+    }
+
+    [[nodiscard]] constexpr auto get_them() const noexcept -> Bitboard {
+        return m_colour[static_cast<std::size_t>(!m_turn)];
+    }
+
     [[nodiscard]] constexpr auto get_white() const noexcept -> Bitboard {
         return m_colour[0];
     }
@@ -197,6 +205,12 @@ class Position {
             return PieceType::None;
         }
     }
+
+    /*
+     * - This function only works on moves created by movegen
+     * - It only checks pseudolegality, meaning the move can result in the king being in check
+     */
+    [[nodiscard]] auto is_pseudolegal(const Move &move) const noexcept -> bool;
 
     [[nodiscard]] auto calculate_hash() const noexcept -> zobrist::hash_type;
 
