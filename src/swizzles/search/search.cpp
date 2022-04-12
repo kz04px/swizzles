@@ -127,8 +127,8 @@ namespace swizzles::search {
     sort(moves, ttentry.move, td, pos.turn());
 
     // Prob cut
-    if (depth >= 5 && std::abs(beta) < mate_score - max_depth) {
-        int r_beta = std::min(mate_score - max_depth, beta + 100);
+    if (!is_root && depth >= 5 && std::abs(beta) < mate_score - max_depth) {
+        const auto r_beta = std::min(mate_score - max_depth, beta + 100);
         for (const auto &move : moves) {
             pos.makemove(move);
 
@@ -137,7 +137,7 @@ namespace swizzles::search {
                 continue;
             }
 
-            auto prob_cut_score = -search(td, ss + 1, pos, -r_beta, -r_beta + 1, depth - 1 - 3);
+            const auto prob_cut_score = -search(td, ss + 1, pos, -r_beta, -r_beta + 1, depth - 1 - 3);
 
             pos.undomove();
 
