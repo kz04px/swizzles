@@ -142,6 +142,8 @@ namespace swizzles::search {
             pos.undomove();
 
             if (prob_cut_score >= r_beta) {
+                ss->pv.clear();
+                ss->pv.push_back(move);
                 return prob_cut_score;
             }
         }
