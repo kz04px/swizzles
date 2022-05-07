@@ -67,8 +67,8 @@ auto go(std::stringstream &ss, const UCIState &state) noexcept -> void {
         } else if (word == "winc") {
             ss >> word;
             settings.type = search::SearchType::Time;
-            settings.binc = std::stoi(word);
-        } else if (word == "winc") {
+            settings.winc = std::stoi(word);
+        } else if (word == "binc") {
             ss >> word;
             settings.type = search::SearchType::Time;
             settings.binc = std::stoi(word);
